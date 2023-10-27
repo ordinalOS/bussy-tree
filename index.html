@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Graph Mockup</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        .node {
+            fill: lightblue;
+            stroke: black;
+        }
+        .link {
+            stroke: #999;
+        }
+    </style>
+</head>
+<body>
+<script>
+    // Set up SVG canvas dimensions
+    const width = 500;
+    const height = 300;
+
+    // Create an SVG element
+    const svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Define nodes and links data
+    const nodes = [
+        { id: "Parent", x: 100, y: 150 },
+        { id: "Child1", x: 300, y: 50 },
+        { id: "Child2", x: 300, y: 100 },
+        { id: "Child3", x: 300, y: 200 },
+        { id: "Child4", x: 300, y: 250 }
+    ];
+
+    const links = [
+        { source: "Parent", target: "Child1" },
+        { source: "Parent", target: "Child2" },
+        { source: "Parent", target: "Child3" },
+        { source: "Parent", target: "Child4" }
+    ];
+
+    // Draw links
+    svg.selectAll(".link")
+        .data(links)
+        .enter().append("line")
+        .attr("class", "link")
+        .attr("x1", d => nodes.find(node => node.id === d.source).x)
+        .attr("y1", d => nodes.find(node => node.id === d.source).y)
+        .attr("x2", d => nodes.find(node => node.id === d.target).x)
+        .attr("y2", d => nodes.find(node => node.id === d.target).y);
+
+    // Draw nodes
+    svg.selectAll(".node")
+        .data(nodes)
+        .enter().append("rect")
+        .attr("class", "node")
+        .attr("x", d => d.x - 20)
+        .attr("y", d => d.y - 20)
+        .attr("width", 40)
+        .attr("height", 40);
+
+    // Add labels
+    svg.selectAll(".label")
+        .data(nodes)
+        .enter().append("text")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(d => d.id);
+</script>
+</body>
+</html>
